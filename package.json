@@ -1,0 +1,33 @@
+{
+  "name": "find-my-car",
+  "version": "0.0.0",
+  "description": "Find My Car",
+  "main": "app.js",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node app.js",
+    "server": "nodemon app.js",
+    "data:import": "node server/seeder.js",
+    "data:destroy": "node server/seeder -d"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cloudinary": "^1.34.0",
+    "colors": "^1.4.0",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^16.0.3",
+    "express": "~4.16.1",
+    "express-async-handler": "^1.2.0",
+    "express-fileupload": "^1.4.0",
+    "googleapis": "^111.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.9.2",
+    "morgan": "~1.9.1",
+    "node-fetch": "^3.3.0",
+    "nodemailer": "^6.9.1",
+    "nodemon": "^2.0.20"
+  }
+}
