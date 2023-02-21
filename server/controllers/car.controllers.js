@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import Bookmark from '../models/bookmark.model.js';
 import Car from '../models/car.models.js';
+import Search from '../models/search.model.js';
 import User from '../models/user.models.js';
 import { responseUpdate } from '../services/utils/response-update.js';
 import { sendCarCreateEmail, sendCarDeleteEmail, sendCarUpdateEmail, sendCarUpdateNotification } from '../services/utils/send-mail.js';
@@ -23,14 +24,21 @@ export const getCars = asyncHandler(async (req, res) => {
         : {};
 
     const filters = {};
-    if (req.query.seats) {
+    if (req.query.seatsStart && req.query.seatsEnd) {
         filters.seats = {
-            $gte: req.query.seats
-            // $lte: 6
+            $gte: Number(req.query.seatsStart),
+            $lte: Number(req.query.seatsEnd)
         };
+    } else if (req.query.seats) {
+        filters.seats = Number(req.query.seats);
     }
-    if (req.query.price) {
-        filters.price = { $lte: req.query.price };
+    if (req.query.priceStart && req.query.priceEnd) {
+        filters.price = {
+            $gte: Number(req.query.priceStart),
+            $lte: Number(req.query.priceEnd)
+        };
+    } else if (req.query.price) {
+        filters.price = Number(req.query.price);
     }
     if (req.query.startDate && req.query.endDate) {
         filters.createdAt = {
@@ -48,7 +56,6 @@ export const getCars = asyncHandler(async (req, res) => {
     res.json(responseUpdate('Car List SUCCESS!', 0, { count, page, pages: Math.ceil(count / pageSize), cars }));
 });
 
-
 // Get By ID
 export const getCarById = asyncHandler(async (req, res) => {
     const car = await Car.findById(req.params.id);
@@ -64,7 +71,6 @@ export const getCarById = asyncHandler(async (req, res) => {
     }
     res.json(responseUpdate('Car By ID SUCCESS!', 0, updatedCar));
 });
-
 
 // Create Car
 export const createCar = asyncHandler(async (req, res) => {
@@ -108,7 +114,6 @@ export const createCar = asyncHandler(async (req, res) => {
     res.status(201).json(responseUpdate('Car Create SUCCESS!', 0, createdCar));
 });
 
-
 //User own car list
 export const userCar = asyncHandler(async (req, res) => {
     const pageSize = 8;
@@ -121,7 +126,6 @@ export const userCar = asyncHandler(async (req, res) => {
         .skip(pageSize * (page - 1));
     res.json(responseUpdate('Car List SUCCESS!', 0, { count, page, pages: Math.ceil(count / pageSize), cars, }));
 });
-
 
 //Top Car car list
 export const topCars = asyncHandler(async (req, res) => {
@@ -144,7 +148,6 @@ export const offerCars = asyncHandler(async (req, res) => {
 
     res.json(responseUpdate('Offers Cars List SUCCESS!', 0, { count, page, pages: Math.ceil(count / pageSize), offerCars, }));
 });
-
 
 // Update Car
 export const updateCar = asyncHandler(async (req, res) => {
@@ -226,3 +229,80 @@ export const deleteCar = asyncHandler(async (req, res) => {
     }
 });
 
+//Recommend car list
+export const recommendCars = asyncHandler(async (req, res) => {
+    const searches = await Search.find({});
+
+    const carIds = searches
+        .filter(search => search?.params)
+        .map(search => search.params);
+
+    const keywords = searches
+        .filter(search => search?.data && search.data?.keyword)
+        .map(search => search.data.keyword)
+        .flat()
+        .map(keyword => ({
+            $or: [
+                { brand: { $regex: keyword, $options: 'i' } },
+                { model: { $regex: keyword, $options: 'i' } },
+                { year: { $regex: keyword, $options: 'i' } },
+                { category: { $in: [keyword] } },
+            ],
+        }));
+
+    const relevantCars = await Car.find({ _id: { $in: carIds } });
+    const keywordData = await Car.find({ $or: keywords });
+    const mergedArr = [...new Set([...relevantCars, ...keywordData])];
+
+    const scoredCars = mergedArr.map(car => {
+        const score = (
+            (car.brand && keywords.some(keyword => car.brand.match(new RegExp(keyword, 'gi'))) || []).length +
+            (car.model && keywords.some(keyword => car.model.match(new RegExp(keyword, 'gi'))) || []).length +
+            (car.year && keywords.some(keyword => car.year.match(new RegExp(keyword, 'gi'))) || []).length +
+            (car.category && keywords.some(keyword => car.category.includes(keyword)) || []).length
+        );
+        return { car, score };
+    });
+    scoredCars.sort((a, b) => b.score - a.score);
+    const recommendedCars = scoredCars.slice(0, 8).map(scoredCar => scoredCar.car);
+    res.json(responseUpdate('Recommended Cars SUCCESS!', 0, recommendedCars));
+});
+
+//Recommend car list
+export const userLikesMost = asyncHandler(async (req, res) => {
+    const searches = await Search.find({});
+
+    const carIds = searches
+        .filter(search => search?.params)
+        .map(search => search.params);
+
+    const keywords = searches
+        .filter(search => search?.data && search.data?.keyword)
+        .map(search => search.data.keyword)
+        .flat()
+        .map(keyword => ({
+            $or: [
+                { brand: { $regex: keyword, $options: 'i' } },
+                { model: { $regex: keyword, $options: 'i' } },
+                { year: { $regex: keyword, $options: 'i' } },
+                { category: { $in: [keyword] } },
+            ],
+        }));
+
+    const relevantCars = await Car.find({ _id: { $in: carIds } });
+    const keywordData = await Car.find({ $or: keywords });
+    const mergedArr = [...new Set([...relevantCars, ...keywordData])];
+
+    const scoredCars = mergedArr.map(car => {
+        const score = (
+            (car.brand && keywords.some(keyword => car.brand.match(new RegExp(keyword, 'gi'))) || []).length +
+            (car.model && keywords.some(keyword => car.model.match(new RegExp(keyword, 'gi'))) || []).length +
+            (car.year && keywords.some(keyword => car.year.match(new RegExp(keyword, 'gi'))) || []).length +
+            (car.category && keywords.some(keyword => car.category.includes(keyword)) || []).length
+        );
+        return { car, score };
+    });
+    scoredCars.sort((a, b) => b.score - a.score);
+    const recommendedCars = scoredCars.slice(0, 1).map(scoredCar => scoredCar.car);
+    res.json(responseUpdate('Most Liked Cars SUCCESS!', 0, recommendedCars));
+});

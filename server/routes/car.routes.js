@@ -1,11 +1,12 @@
 import express from 'express';
-import { createCar, deleteCar, getCarById, getCars, offerCars, topCars, updateCar, userCar } from '../controllers/car.controllers.js';
+import { createCar, deleteCar, getCarById, getCars, offerCars, recommendCars, topCars, updateCar, userCar, userLikesMost } from '../controllers/car.controllers.js';
 
 import { admin, protect } from '../services/middleware/auth.js';
+import { searchActivity } from '../services/middleware/search-activity.js';
 
 const router = express.Router();
 
-router.route('/').get(getCars);
+router.route('/').get(searchActivity, getCars);
 router.route('/create').post(protect, createCar);
 
 router
@@ -16,8 +17,10 @@ router
 router.route('/user-car').get(protect, userCar);
 router.route('/top-cars').get(protect, topCars);
 router.route('/offers-cars').get(offerCars);
+router.route('/recommend-cars').get(recommendCars);
+router.route('/user-most-like').get(userLikesMost);
 
-router.route('/:id').get(getCarById);
+router.route('/:id').get(searchActivity, getCarById);
 
 
 export default router;

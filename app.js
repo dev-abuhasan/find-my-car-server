@@ -11,6 +11,7 @@ import connect_db from './server/services/config/db.js';
 
 import userRoutes from './server/routes/user.routes.js';
 import carRoutes from './server/routes/car.routes.js';
+import searchRoutes from './server/routes/search.routes.js';
 import bookmarkRoutes from './server/routes/bookmark-routes.js';
 import uploadRoutes from './server/routes/upload.routes.js';
 
@@ -41,6 +42,7 @@ app.get('/', (req, res) => {
 //Routes
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/cars', carRoutes);
+app.use('/api/v1/search', searchRoutes);
 app.use('/api/v1/bookmarks', bookmarkRoutes);
 app.use('/api/v1/upload', uploadRoutes);
 
