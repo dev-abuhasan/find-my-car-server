@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d7c088ec-1ab1-4587-8a85-6c59bc24e748",
+		"_postman_id": "0699b6f2-c877-4b1d-a487-1f9b5589a804",
 		"name": "find-my-car",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "16401030"
@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email2\": \"ahhalpbd12@gmail.com\",\r\n    \"email1\": \"ahhalpbd12@gmail.com\",\r\n    \"email\": \"dev.abuhasan@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"raw": "{\r\n    \"email2\": \"ahhalpbd12@gmail.com\",\r\n    \"email\": \"ahhalpbd02@gmail.com\",\r\n    \"email1\": \"dev.abuhasan@gmail.com\",\r\n    \"email3\": \"ahhalpbd12@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -43,7 +43,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"Musa\",\r\n    \"lastName\": \"Hosen\",\r\n    \"email\": \"ahhalpbd12@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"raw": "{\r\n    \"firstName\": \"Musa\",\r\n    \"lastName\": \"Hosen\",\r\n    \"email\": \"ahhalpbd02@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -70,7 +70,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJNdXNhIiwibGFzdE5hbWUiOiJIb3NlbiIsImVtYWlsIjoiYWhoYWxwYmQxMkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IjEyMzQ1NiIsImlhdCI6MTY3NjkyMDYyNiwiZXhwIjoxNjc2OTIwOTI2fQ.QaYhvWHrj3ujElt660Wr78gB4BU46S_koPE5bj3S3iY\"\r\n}",
+							"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJNdXNhIiwibGFzdE5hbWUiOiJIb3NlbiIsImVtYWlsIjoiYWhoYWxwYmQwMkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IjEyMzQ1NiIsImlhdCI6MTY3Njk2MDE1NiwiZXhwIjoxNjc2OTYwNDU2fQ.lxOGMrV6ecJ1ggt3nT65Rbz3Ohl1qWXkb5M7AUBIt3s\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -314,7 +314,7 @@
 								{
 									"key": "avatar",
 									"type": "file",
-									"src": "/C:/Users/abuhasan/Desktop/New folder/abuhasan.jpg"
+									"src": "/C:/Users/ahins/OneDrive/Desktop/01.jpg"
 								}
 							]
 						},
@@ -330,6 +330,44 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "/upload/car",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZjNhNWMzNzUwNzJkM2JkZmU3NGM0NSIsImlhdCI6MTY3NjkxMzg1MSwiZXhwIjoxNjc5NTA1ODUxfQ.Vm1hVqRR1NA3FhN1QyDF5eGhXX-vpkS7d5B9HlYcpzQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "car",
+									"type": "file",
+									"src": "/C:/Users/ahins/OneDrive/Desktop/01.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/upload/car",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"upload",
+								"car"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -337,14 +375,257 @@
 			"name": "car",
 			"item": [
 				{
-					"name": "New Request",
+					"name": "/cars",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/cars",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"cars"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "hunt503",
+									"disabled": true
+								},
+								{
+									"key": "sortPrice",
+									"value": "highToLow",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/cars/create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"brand\": \"Farari 10\",\r\n    \"model\": \"hunt503\",\r\n    \"year\": \"2023\",\r\n    \"color\": \"sky-blue\",\r\n    \"image\": \"https://res.cloudinary.com/dydkdsasz/image/upload/v1676962400/car/w2qzcx5svv29tm1qkeaz.jpg\",\r\n    \"availableColors\": [\r\n        \"white\",\r\n        \"red\"\r\n    ],\r\n    \"categories\": [\r\n        \"sedan\",\r\n        \"family\"\r\n    ],\r\n    \"seats\": 8,\r\n    \"price\": 400000,\r\n    \"location\": \"Dharmokam\",\r\n    \"countInStock\": \"50\",\r\n    \"offer\": {\r\n        \"type\": \"discount\",\r\n        \"value\": 2455,\r\n        \"expiresAt\": \"2023-02-30T14:30:00.000Z\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/cars/create",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"cars",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/user-car",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/cars/user-car",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"cars",
+								"user-car"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "hunt503",
+									"disabled": true
+								},
+								{
+									"key": "sortPrice",
+									"value": "highToLow",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/user-car/:id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"brand\": \"Farari - 10\",\r\n    \"model\": \"hunt503\",\r\n    \"year\": \"2023\",\r\n    \"color\": \"sky-blue\",\r\n    \"image\": \"https://res.cloudinary.com/dydkdsasz/image/upload/v1676962400/car/w2qzcx5svv29tm1qkeaz.jpg\",\r\n    \"availableColors\": [\r\n        \"white\",\r\n        \"red\"\r\n    ],\r\n    \"categories\": [\r\n        \"sedan\",\r\n        \"family\"\r\n    ],\r\n    \"seats\": 8,\r\n    \"price\": 400000,\r\n    \"location\": \"Dharmokam\",\r\n    \"countInStock\": \"50\",\r\n    \"offer\": {\r\n        \"type\": \"discount\",\r\n        \"value\": 99999,\r\n        \"expiresAt\": \"2023-02-30T14:30:00.000Z\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/cars/user-car/63f4389b70ae430226682e57",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"cars",
+								"user-car",
+								"63f4389b70ae430226682e57"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "hunt503",
+									"disabled": true
+								},
+								{
+									"key": "sortPrice",
+									"value": "highToLow",
+									"disabled": true
+								},
+								{
+									"key": "63f493c7613e221558c3a276",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/user-car/:id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/cars/user-car/63f4aa13fa266da529a8f19c",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"cars",
+								"user-car",
+								"63f4aa13fa266da529a8f19c"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "hunt503",
+									"disabled": true
+								},
+								{
+									"key": "sortPrice",
+									"value": "highToLow",
+									"disabled": true
+								},
+								{
+									"key": "63f493c7613e221558c3a276",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "bookmark",
+			"item": [
+				{
+					"name": "{{host}}/bookmarks",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}",
+							"raw": "{{host}}/bookmarks",
 							"host": [
 								"{{host}}"
+							],
+							"path": [
+								"bookmarks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{host}}/bookmarks/create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/bookmarks/create",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"bookmarks",
+								"create"
 							]
 						}
 					},

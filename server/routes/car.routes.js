@@ -1,16 +1,21 @@
 import express from 'express';
-import { GeneratedAPIs } from 'googleapis/build/src/apis/index.js';
-import { getCars } from '../controllers/car.controllers.js';
+import { createCar, deleteCar, getCars, updateCar, userCar } from '../controllers/car.controllers.js';
 
 import { admin, protect } from '../services/middleware/auth.js';
 
 const router = express.Router();
 
 router.route('/').get(getCars);
+router.route('/create').post(protect, createCar);
 
-// router.route('/create').post(protect, admin, createProduct);
-// router
-//   .route('/:id')
+//own car list
+router.route('/user-car').get(protect, userCar);
+
+router
+    .route('/user-car/:id')
+    .put(protect, updateCar)
+    .delete(protect, deleteCar);
+
 //   .get(getProductById)
 //   .post(protect, createProductReview)
 //   .put(protect, admin, updateProduct)

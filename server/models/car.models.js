@@ -39,7 +39,7 @@ const carSchema = new mongoose.Schema(
             type: [{
                 type: String,
                 enum: ['sedan', 'family', 'friends', 'travel']
-            }], required: false
+            }], required: true
         },
         seats: { type: Number, required: true },
         price: { type: Number, required: true },
