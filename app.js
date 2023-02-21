@@ -10,6 +10,7 @@ import { errorHandler, notFound } from './server/services/middleware/error.js';
 import connect_db from './server/services/config/db.js';
 
 import userRoutes from './server/routes/user.routes.js';
+import carRoutes from './server/routes/car.routes.js';
 import uploadRoutes from './server/routes/upload.routes.js';
 
 //db-connection
@@ -38,6 +39,7 @@ app.get('/', (req, res) => {
 
 //Routes
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/cars', carRoutes);
 app.use('/api/v1/upload', uploadRoutes);
 
 // Error Handler

@@ -1,22 +1,19 @@
 import express from 'express';
+import { GeneratedAPIs } from 'googleapis/build/src/apis/index.js';
+import { getCars } from '../controllers/car.controllers.js';
 
 import { admin, protect } from '../services/middleware/auth.js';
 
 const router = express.Router();
 
+router.route('/').get(getCars);
 
-router.post('/register', register);
-
-router
-    .route('/profile')
-    .get(protect, getUserProfile)
-    .put(protect, updateUserProfile);
-
-router.route('/admin').get(protect, admin, getUsers);
-router
-    .route('/admin/:id')
-    .get(protect, admin, getUserById)
-    .put(protect, admin, updateUser)
-    .delete(protect, admin, deleteUser);
+// router.route('/create').post(protect, admin, createProduct);
+// router
+//   .route('/:id')
+//   .get(getProductById)
+//   .post(protect, createProductReview)
+//   .put(protect, admin, updateProduct)
+//   .delete(protect, admin, deleteProduct);
 
 export default router;

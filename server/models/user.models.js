@@ -28,6 +28,8 @@ const userSchema = new mongoose.Schema(
             required: true,
             default: false,
         },
+        loginAttempts: { type: Number, default: 0 },
+        lastLoginAttempt: { type: Date },
     },
     {
         timestamps: true,

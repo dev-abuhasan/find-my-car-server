@@ -1,0 +1,370 @@
+{
+	"info": {
+		"_postman_id": "d7c088ec-1ab1-4587-8a85-6c59bc24e748",
+		"name": "find-my-car",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16401030"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "/users/login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email2\": \"ahhalpbd12@gmail.com\",\r\n    \"email1\": \"ahhalpbd12@gmail.com\",\r\n    \"email\": \"dev.abuhasan@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Musa\",\r\n    \"lastName\": \"Hosen\",\r\n    \"email\": \"ahhalpbd12@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/register",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/activation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJNdXNhIiwibGFzdE5hbWUiOiJIb3NlbiIsImVtYWlsIjoiYWhoYWxwYmQxMkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IjEyMzQ1NiIsImlhdCI6MTY3NjkyMDYyNiwiZXhwIjoxNjc2OTIwOTI2fQ.QaYhvWHrj3ujElt660Wr78gB4BU46S_koPE5bj3S3iY\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/activation",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"activation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/profile",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Musa Ali\",\r\n    \"lastName\": \"Hosen\",\r\n    \"oldPassword\": \"123456\",\r\n    \"newPassword\": \"123456\",\r\n    \"avatar\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/profile",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/admin > get-all-user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/admin",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/admin/:id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/admin/63f3a5c375072d3bdfe74c46",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"admin",
+								"63f3a5c375072d3bdfe74c46"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/admin/:id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Musa Ali\",\r\n    \"lastName\": \"Hosen\",\r\n    \"oldPassword\": \"123456\",\r\n    \"newPassword\": \"123456\",\r\n    \"avatar\": \"\",\r\n    \"isAdmin\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/admin/63f3a5c375072d3bdfe74c46",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"admin",
+								"63f3a5c375072d3bdfe74c46"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/admin/:id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Musa Ali\",\r\n    \"lastName\": \"Hosen\",\r\n    \"oldPassword\": \"123456\",\r\n    \"newPassword\": \"123456\",\r\n    \"avatar\": \"\",\r\n    \"isAdmin\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/admin/63f3c74a273ccb6cbc655adc",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"admin",
+								"63f3c74a273ccb6cbc655adc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "file-upload",
+			"item": [
+				{
+					"name": "/upload/avatar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZjNhNWMzNzUwNzJkM2JkZmU3NGM0NSIsImlhdCI6MTY3NjkxMzg1MSwiZXhwIjoxNjc5NTA1ODUxfQ.Vm1hVqRR1NA3FhN1QyDF5eGhXX-vpkS7d5B9HlYcpzQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/abuhasan/Desktop/New folder/abuhasan.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/upload/avatar",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"upload",
+								"avatar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "car",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}",
+							"host": [
+								"{{host}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "root",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}",
+					"host": [
+						"{{host}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

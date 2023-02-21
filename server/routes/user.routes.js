@@ -3,13 +3,13 @@ import {
     activeUserAccount, deleteUser, getUserById, getUserProfile, getUsers,
     login, register, updateUser, updateUserProfile
 } from '../controllers/user.controllers.js';
-import { admin, protect } from '../services/middleware/auth.js';
+import { admin, checkLoginAttempts, protect } from '../services/middleware/auth.js';
 
 const router = express.Router();
 
 
 router.post('/register', register);
-router.post('/login', login);
+router.post('/login', checkLoginAttempts, login);
 router.post('/activation', activeUserAccount);
 
 router
