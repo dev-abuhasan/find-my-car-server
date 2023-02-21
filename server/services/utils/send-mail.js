@@ -336,3 +336,118 @@ export const sendCarDeleteEmail = (to, data) => {
     throw new Error('Something went wrong');
   }
 };
+
+
+export const sendCarUpdateNotification = (to, data, oldName) => {
+  oauth2Client.setCredentials({
+    refresh_token: GOOGLE_REFRESH_TOKEN,
+  });
+
+  const accessToken = oauth2Client.getAccessToken();
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      type: 'OAuth2',
+      user: ADMIN_EMAIL,
+      clientId: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
+      refreshToken: GOOGLE_REFRESH_TOKEN,
+      accessToken,
+    },
+  });
+
+  const mailOptions = {
+    from: 'Dev Abu Hasan',
+    to,
+    subject: 'Find your car || Your bookmarked car has been updated!',
+    html: `
+    <div
+    style="max-width: 700px; margin:auto;  border-radius: 10px; border:3px solid #929292; padding: 30px 20px; font-size: 110%;">
+    <div style="text-align: center">
+      <h1 style="color: #f36e16;">Find Your🥰Car</h1>
+      <h4 style="text-align: center;">The car "${oldName}" that you bookmarked has been updated. Check it out!</h4>
+    </div>
+    <div div style="text-align: center;">
+      <div style="max-width: 100%;">
+        <table
+            style="border-collapse:collapse;width:100%;border-top:1px solid #dddddd;border-left:1px solid #dddddd;margin-bottom:20px">
+            <thead>
+                <tr>
+                    <td
+                        style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;background-color:#efefef;font-weight:bold;text-align:center;padding:7px;color:#222222">
+                        Car</td>
+                    <td
+                        style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;background-color:#efefef;font-weight:bold;text-align:center;padding:7px;color:#222222">
+                        Brand</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td
+                        style='font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px'>
+                        <img style='width:40px;' src='${data.image}' alt='' />
+                    </td>
+                    <td
+                        style='font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px'>
+                        ${data.brand}
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px"
+                        colspan="1"><b>Model</b></td>
+                    <td
+                        style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">
+                        ${data?.model}
+                    </td>
+                </tr>
+                <tr>
+                  <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px"
+                      colspan="1"><b>Year</b></td>
+                  <td
+                      style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">
+                      ${data?.year}
+                      </br>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px"
+                      colspan="1"><b>Price</b></td>
+                  <td
+                      style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">
+                      ${data?.price}
+                      </br>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px"
+                      colspan="1"><b>Seats</b></td>
+                  <td
+                      style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">
+                      ${data?.seats}
+                      </br>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px"
+                      colspan="1"><b>Categories</b></td>
+                  <td
+                      style="font-size:12px;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;text-align:left;padding:7px">
+                      ${data?.categories}
+                      </br>
+                  </td>
+                </tr>
+            </tfoot>
+        </table>
+      </div>
+    </div>
+  </div> `,
+  };
+
+  const emailSend = transporter.sendMail(mailOptions);
+  if (!emailSend) {
+    res.status(400);
+    throw new Error('Something went wrong');
+  }
+};

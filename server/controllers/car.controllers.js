@@ -1,7 +1,9 @@
 import asyncHandler from 'express-async-handler';
+import Bookmark from '../models/bookmark.model.js';
 import Car from '../models/car.models.js';
+import User from '../models/user.models.js';
 import { responseUpdate } from '../services/utils/response-update.js';
-import { sendCarCreateEmail, sendCarDeleteEmail, sendCarUpdateEmail } from '../services/utils/send-mail.js';
+import { sendCarCreateEmail, sendCarDeleteEmail, sendCarUpdateEmail, sendCarUpdateNotification } from '../services/utils/send-mail.js';
 
 
 // Get All Car
@@ -15,19 +17,54 @@ export const getCars = asyncHandler(async (req, res) => {
                 { brand: { $regex: req.query.keyword, $options: 'i' } },
                 { model: { $regex: req.query.keyword, $options: 'i' } },
                 { year: { $regex: req.query.keyword, $options: 'i' } },
-                // { seats: { $regex: req.query.keyword, $options: 'i' } },
                 { category: { $in: [req.query.keyword] } },
-            ]
+            ],
         }
         : {};
 
-    const count = await Car.countDocuments({ ...keyword });
-    const cars = await Car.find({ ...keyword })
+    const filters = {};
+    if (req.query.seats) {
+        filters.seats = {
+            $gte: req.query.seats
+            // $lte: 6
+        };
+    }
+    if (req.query.price) {
+        filters.price = { $lte: req.query.price };
+    }
+    if (req.query.startDate && req.query.endDate) {
+        filters.createdAt = {
+            $gte: new Date(req.query.startDate),
+            $lte: new Date(req.query.endDate),
+        };
+    }
+
+    const count = await Car.countDocuments({ ...keyword, ...filters });
+    const cars = await Car.find({ ...keyword, ...filters })
         .sort({ price: req.query.sortPrice === 'highToLow' ? -1 : 1 })
         .limit(pageSize)
         .skip(pageSize * (page - 1));
-    res.json(responseUpdate('Car List SUCCESS!', 0, { count, page, pages: Math.ceil(count / pageSize), cars, }));
+
+    res.json(responseUpdate('Car List SUCCESS!', 0, { count, page, pages: Math.ceil(count / pageSize), cars }));
 });
+
+
+// Get By ID
+export const getCarById = asyncHandler(async (req, res) => {
+    const car = await Car.findById(req.params.id);
+    if (!car) {
+        res.status(404);
+        throw new Error('Car not found');
+    }
+    await Car.updateOne({ _id: req.params.id }, { $inc: { viewCount: 1 } });
+
+    const updatedCar = await Car.findById(req.params.id);
+    if (!updatedCar) {
+        throw new Error('Error updating view count');
+    }
+    res.json(responseUpdate('Car By ID SUCCESS!', 0, updatedCar));
+});
+
 
 // Create Car
 export const createCar = asyncHandler(async (req, res) => {
@@ -85,6 +122,30 @@ export const userCar = asyncHandler(async (req, res) => {
     res.json(responseUpdate('Car List SUCCESS!', 0, { count, page, pages: Math.ceil(count / pageSize), cars, }));
 });
 
+
+//Top Car car list
+export const topCars = asyncHandler(async (req, res) => {
+    const topCars = await Car.find({})
+        .sort({ price: req.query.sortPrice === 'highToLow' ? -1 : 1 });
+
+    res.json(responseUpdate('Top Cars List SUCCESS!', 0, topCars));
+});
+
+//Offer Car car list
+export const offerCars = asyncHandler(async (req, res) => {
+    const pageSize = 8;
+    const page = Number(req.query.pageNumber) || 1;
+    const count = await Car.countDocuments({ "offer.value": { $ne: 0 }, "offer.offerPrice": { $ne: 0 } });
+
+    const offerCars = await Car.find({ "offer.value": { $ne: 0 }, "offer.offerPrice": { $ne: 0 } })
+        .limit(pageSize)
+        .skip(pageSize * (page - 1));
+
+
+    res.json(responseUpdate('Offers Cars List SUCCESS!', 0, { count, page, pages: Math.ceil(count / pageSize), offerCars, }));
+});
+
+
 // Update Car
 export const updateCar = asyncHandler(async (req, res) => {
     const {
@@ -103,7 +164,7 @@ export const updateCar = asyncHandler(async (req, res) => {
     } = req.body;
 
     const car = await Car.findById(req.params.id);
-
+    const oldName = car.brand;
     if (car) {
         if (car.user.toString() === req.user._id.toString()) {
             car.brand = brand;
@@ -123,6 +184,15 @@ export const updateCar = asyncHandler(async (req, res) => {
 
             if (updatedCar) {
                 await sendCarUpdateEmail(req.user.email, updatedCar);
+
+                const bookmarks = await Bookmark.find({ car: updatedCar._id });
+                const users = bookmarks.map((bookmark) => bookmark.user.toString());
+                const uniqueUsers = [...new Set(users)];
+                const getUser = await User.find({ _id: { $in: uniqueUsers } });
+                for (const { email } of getUser) {
+                    await sendCarUpdateNotification(email, updatedCar, oldName);
+                }
+
             }
             res.json(responseUpdate('Car Update Success!', 0, updatedCar));
         } else {
@@ -145,7 +215,7 @@ export const deleteCar = asyncHandler(async (req, res) => {
             await car.remove();
             await sendCarDeleteEmail(req.user.email, req.params.id);
 
-            res.json(responseUpdate('Product Deleted Successfully', 0, req.params.id));
+            res.json(responseUpdate('Car Deleted Successfully', 0, req.params.id));
         } else {
             res.status(401);
             throw new Error('Not authorized to delete this car!');
