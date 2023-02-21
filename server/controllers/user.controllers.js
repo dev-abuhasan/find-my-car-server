@@ -64,8 +64,13 @@ export const login = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    
+    if (!user) {
+        return res.status(401).json({ error: 'User Not Found!' });
+    }
+
     if (user && (await user.matchPassword(password))) {
+        user.loginAttempts = 0;
+        await user.save();
         res.json(responseUpdate("User login SUCCESS!", 0, {
             _id: user._id,
             firstName: user.firstName,
@@ -76,6 +81,9 @@ export const login = asyncHandler(async (req, res) => {
             token: generateIdToken(user._id),
         }));
     } else {
+        user.loginAttempts += 1;
+        user.lastLoginAttempt = new Date();
+        await user.save();
         res.status(401);
         throw new Error('Invalid email or password');
     }
