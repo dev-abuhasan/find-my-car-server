@@ -17,8 +17,11 @@ export const checkLoginAttempts = asyncHandler(async (req, res, next) => {
 
             if (now < banEndTime) {
                 const remainingTime = Math.ceil((banEndTime - now) / 1000);
+                const remainingMinutes = Math.floor(remainingTime / 60);
+                const remainingSeconds = remainingTime % 60;
+
                 return res.status(429).json(responseUpdate('Many Login attempts!', 1, {
-                    error: `Too many failed login attempts. Please try again in ${remainingTime} seconds.`,
+                    error: `Too many failed login attempts. Please try again in ${remainingMinutes}:${remainingSeconds} min.`,
                 }));
             }
 
