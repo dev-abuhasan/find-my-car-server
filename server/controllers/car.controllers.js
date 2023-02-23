@@ -52,8 +52,9 @@ export const getCars = asyncHandler(async (req, res) => {
         .sort({ price: req.query.sortPrice === 'highToLow' ? -1 : 1 })
         .limit(pageSize)
         .skip(pageSize * (page - 1));
-
-    res.json(responseUpdate('Car List SUCCESS!', 0, { count, page, pages: Math.ceil(count / pageSize), cars }));
+    const maxPriceCar = await Car.findOne().sort({ price: -1 }).limit(1);
+    const maxSeats = await Car.findOne().sort({ seats: -1 }).limit(1);
+    res.json(responseUpdate('Car List SUCCESS!', 0, { count, page, pages: Math.ceil(count / pageSize), maxPriceCar: maxPriceCar?.price, maxSeats: maxSeats?.seats, cars }));
 });
 
 // Get By ID
