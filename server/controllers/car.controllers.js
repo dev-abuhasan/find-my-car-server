@@ -143,12 +143,12 @@ export const offerCars = asyncHandler(async (req, res) => {
     const page = Number(req.query.pageNumber) || 1;
     const count = await Car.countDocuments({ "offer.value": { $ne: 0 }, "offer.offerPrice": { $ne: 0 } });
 
-    const offerCars = await Car.find({ "offer.value": { $ne: 0 }, "offer.offerPrice": { $ne: 0 } })
+    const cars = await Car.find({ "offer.value": { $ne: 0 }, "offer.offerPrice": { $ne: 0 } })
         .limit(pageSize)
         .skip(pageSize * (page - 1));
 
 
-    res.json(responseUpdate('Offers Cars List SUCCESS!', 0, { count, page, pages: Math.ceil(count / pageSize), offerCars, }));
+    res.json(responseUpdate('Offers Cars List SUCCESS!', 0, { count, page, pages: Math.ceil(count / pageSize), cars, }));
 });
 
 // Update Car
@@ -267,8 +267,16 @@ export const recommendCars = asyncHandler(async (req, res) => {
     });
     scoredCars.sort((a, b) => b.score - a.score);
     const recommendedCars = scoredCars.slice(0, 8).map(scoredCar => scoredCar.car);
+
+    // Shuffle the recommended cars using Fisher-Yates shuffle algorithm
+    for (let i = recommendedCars.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [recommendedCars[i], recommendedCars[j]] = [recommendedCars[j], recommendedCars[i]];
+    }
+
     res.json(responseUpdate('Recommended Cars SUCCESS!', 0, recommendedCars));
 });
+
 
 //Recommend car list
 export const userLikesMost = asyncHandler(async (req, res) => {
