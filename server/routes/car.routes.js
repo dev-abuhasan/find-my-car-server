@@ -15,7 +15,7 @@ router
     .delete(protect, deleteCar);
 
 router.route('/user-car').get(protect, userCar);
-router.route('/top-cars').get(protect, topCars);
+router.route('/top-cars').get(topCars);
 router.route('/offers-cars').get(offerCars);
 router.route('/recommend-cars').get(recommendCars);
 router.route('/user-most-like').get(userLikesMost);
