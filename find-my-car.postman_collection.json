@@ -275,14 +275,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/users/admin/63f3c74a273ccb6cbc655adc",
+							"raw": "{{host}}/users/admin/63f69e3c4ae08d17d47a5fc3",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"users",
 								"admin",
-								"63f3c74a273ccb6cbc655adc"
+								"63f69e3c4ae08d17d47a5fc3"
 							]
 						}
 					},
@@ -352,7 +352,7 @@
 								{
 									"key": "car",
 									"type": "file",
-									"src": "/C:/Users/ahins/OneDrive/Desktop/01.jpg"
+									"src": "/C:/Users/abuhasan/Desktop/www-pana.png"
 								}
 							]
 						},
@@ -390,7 +390,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/cars?pageNumber=1&startDate=2023-02-21&endDate=2023-02-22",
+							"raw": "{{host}}/cars?pageNumber=1&keyword=family&sortPrice=highToLow&price=400000&seats=5&startDate=2023-02-21&endDate=2023-02-22&priceStart=5000&priceEnd=350000&seatsStart=5&seatsEnd=10",
 							"host": [
 								"{{host}}"
 							],
@@ -399,28 +399,24 @@
 							],
 							"query": [
 								{
-									"key": "keyword",
-									"value": "hunt503",
-									"disabled": true
-								},
-								{
-									"key": "sortPrice",
-									"value": "highToLow",
-									"disabled": true
-								},
-								{
 									"key": "pageNumber",
 									"value": "1"
 								},
 								{
-									"key": "seats",
-									"value": "8",
-									"disabled": true
+									"key": "keyword",
+									"value": "family"
+								},
+								{
+									"key": "sortPrice",
+									"value": "highToLow"
 								},
 								{
 									"key": "price",
-									"value": "400000",
-									"disabled": true
+									"value": "400000"
+								},
+								{
+									"key": "seats",
+									"value": "5"
 								},
 								{
 									"key": "startDate",
@@ -429,6 +425,22 @@
 								{
 									"key": "endDate",
 									"value": "2023-02-22"
+								},
+								{
+									"key": "priceStart",
+									"value": "5000"
+								},
+								{
+									"key": "priceEnd",
+									"value": "350000"
+								},
+								{
+									"key": "seatsStart",
+									"value": "5"
+								},
+								{
+									"key": "seatsEnd",
+									"value": "10"
 								}
 							]
 						}
@@ -451,13 +463,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/cars/63f4389b70ae430226682e55",
+							"raw": "{{host}}/cars/63f4c4945bef59d5425eaf1b",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"cars",
-								"63f4389b70ae430226682e55"
+								"63f4c4945bef59d5425eaf1b"
 							],
 							"query": [
 								{
@@ -470,6 +482,97 @@
 									"value": "highToLow",
 									"disabled": true
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/cars/offers-cars",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/cars/offers-cars",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"cars",
+								"offers-cars"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/cars/recommend-cars",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/cars/recommend-cars",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"cars",
+								"recommend-cars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/cars/user-most-like",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/cars/user-most-like",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"cars",
+								"user-most-like"
 							]
 						}
 					},
@@ -560,7 +663,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{token}}",
+									"value": "",
 									"type": "string"
 								}
 							]
@@ -575,34 +678,6 @@
 							"path": [
 								"cars",
 								"top-cars"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/cars//offers-cars",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/cars/offers-cars",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"cars",
-								"offers-cars"
 							]
 						}
 					},
@@ -633,14 +708,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/cars/user-car/63f4389b70ae430226682e56",
+							"raw": "{{host}}/cars/user-car/63f4389b70ae430226682e55",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"cars",
 								"user-car",
-								"63f4389b70ae430226682e56"
+								"63f4389b70ae430226682e55"
 							],
 							"query": [
 								{
@@ -722,7 +797,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{token2}}",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -749,7 +824,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{token2}}",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -757,14 +832,14 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/bookmarks/create/63f4389b70ae430226682e55",
+							"raw": "{{host}}/bookmarks/create/63f4389b70ae430226682e56",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"bookmarks",
 								"create",
-								"63f4389b70ae430226682e55"
+								"63f4389b70ae430226682e56"
 							]
 						}
 					},
@@ -811,6 +886,90 @@
 									"value": "",
 									"disabled": true
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "search",
+			"item": [
+				{
+					"name": "/api/v1/search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/search?pageNumber=2",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"search"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/search/:id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/search/63f52310e56bdf34a0536e2b",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"search",
+								"63f52310e56bdf34a0536e2b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/search/delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/search/delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"search",
+								"delete"
 							]
 						}
 					},
