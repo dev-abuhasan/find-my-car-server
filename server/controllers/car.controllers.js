@@ -18,7 +18,7 @@ export const getCars = asyncHandler(async (req, res) => {
                 { brand: { $regex: req.query.keyword, $options: 'i' } },
                 { model: { $regex: req.query.keyword, $options: 'i' } },
                 { year: { $regex: req.query.keyword, $options: 'i' } },
-                { category: { $in: [req.query.keyword] } },
+                { categories: { $in: [req.query.keyword] } },
             ],
         }
         : {};
