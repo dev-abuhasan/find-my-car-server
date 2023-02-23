@@ -130,7 +130,8 @@ export const userCar = asyncHandler(async (req, res) => {
 //Top Car car list
 export const topCars = asyncHandler(async (req, res) => {
     const topCars = await Car.find({})
-        .sort({ price: req.query.sortPrice === 'highToLow' ? -1 : 1 });
+        .sort({ viewCount: -1 })
+        .limit(10);
 
     res.json(responseUpdate('Top Cars List SUCCESS!', 0, topCars));
 });
